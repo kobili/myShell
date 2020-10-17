@@ -20,17 +20,26 @@ void exec_echo(char** args, int nargs) {
     }
 }
 
+//print the current working directory
+void exec_pwd(char** args, int nargs) {
+    char* wd = getcwd(NULL, 0);
+    printf("%s\n", wd);
+    free(wd);
+}
+
 void (* built_in_functions[]) (char**, int) = {
     &exec_exit,
-    &exec_echo
+    &exec_echo,
+    &exec_pwd
 };
 
 char *built_in_commands[] = {
     "exit",
-    "echo"
+    "echo",
+    "pwd"
 };
 
-int nbuilt_in_commands = 2;
+int nbuilt_in_commands = 3;
 
 void execute_instruction(char** args, int nargs) {
     for (int i = 0; i < nbuilt_in_commands; i++) {
