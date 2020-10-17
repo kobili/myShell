@@ -4,8 +4,9 @@
 #include <stdio.h>
 
 int main(int argc, char* argv[]) {
+    int exit = 0;
 
-    while (1) {
+    while (!exit) {
         printf("$ ");
 
         // read a line from the console and store it in line
@@ -15,10 +16,11 @@ int main(int argc, char* argv[]) {
 
         // exit if eof
         if (feof(stdin)) {
-            exit(0);
+            exit = 1;
         }
 
         // split the input line by spaces, store the individual strings in split_input
+        // the first string in split_input is the command; the rest of the strings are arguments
         char **split_input = malloc(1024);
         char* token = strtok(line, " \n");
         int ntokens = 0;
@@ -26,6 +28,12 @@ int main(int argc, char* argv[]) {
             split_input[ntokens] = token;
             ntokens++;
             token = strtok(NULL, " \n");
+        }
+
+        // execute instruction
+        if (strcmp(split_input[0], "exit") == 0) {
+            printf("exiting... \n");
+            exit = 1;
         }
 
         // free allocated memory
