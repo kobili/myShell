@@ -39,21 +39,35 @@ int exec_pwd(char** args, int nargs) {
 
 }
 
+// change the current working directory
+int exec_cd(char** args, int nargs) {
+    int result = chdir(args[1]);
+
+    if (result == -1) {
+        perror("cd");
+        return 1;
+    }
+
+    return 0;
+}
+
 // these functions return 0 when successfully executed
 // returns 1 on error
 int (* built_in_functions[]) (char**, int) = {
     &exec_exit,
     &exec_echo,
-    &exec_pwd
+    &exec_pwd,
+    &exec_cd
 };
 
 char *built_in_commands[] = {
     "exit",
     "echo",
-    "pwd"
+    "pwd",
+    "cd"
 };
 
-int nbuilt_in_commands = 3;
+int nbuilt_in_commands = 4;
 
 // execute the instruction corresponding to args[0]
 // args[0] is the actual command itself - the rest of args is arguments to the instruction
@@ -65,6 +79,7 @@ int execute_instruction(char** args, int nargs) {
             return (*built_in_functions[i]) (args, nargs);
         }
     }
+    printf("command not found '%s'\n", args[0]);
     return 1;
 }
 
