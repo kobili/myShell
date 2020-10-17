@@ -3,10 +3,47 @@
 #include <string.h>
 #include <stdio.h>
 
-int main(int argc, char* argv[]) {
-    int exit = 0;
+// exit the shell
+void exec_exit(char** args, int nargs) {
+    printf("exiting... \n");
+    exit(0);
+}
 
-    while (!exit) {
+// echo the user's input
+void exec_echo(char** args, int nargs) {
+    for (int i = 1; i < nargs; i++) {
+        if (i == nargs - 1) {
+            printf("%s\n", args[i]);
+        } else {
+            printf("%s ", args[i]);
+        }
+    }
+}
+
+void (* built_in_functions[]) (char**, int) = {
+    &exec_exit,
+    &exec_echo
+};
+
+char *built_in_commands[] = {
+    "exit",
+    "echo"
+};
+
+int nbuilt_in_commands = 2;
+
+void execute_instruction(char** args, int nargs) {
+    for (int i = 0; i < nbuilt_in_commands; i++) {
+        if (strcmp(args[0], built_in_commands[i]) == 0) {
+            // execute the command
+            return (*built_in_functions[i]) (args, nargs);
+        }
+    }
+}
+
+int main(int argc, char* argv[]) {
+
+    while (1) {
         printf("$ ");
 
         // read a line from the console and store it in line
@@ -16,28 +53,24 @@ int main(int argc, char* argv[]) {
 
         // exit if eof
         if (feof(stdin)) {
-            exit = 1;
+            exit(0);
         }
 
-        // split the input line by spaces, store the individual strings in split_input
-        // the first string in split_input is the command; the rest of the strings are arguments
-        char **split_input = malloc(1024);
+        // split the input line by spaces, store the individual strings in args
+        // the first string in args is the command; the rest of the strings are arguments
+        char **args = malloc(1024);
         char* token = strtok(line, " \n");
         int ntokens = 0;
         while (token != NULL) {
-            split_input[ntokens] = token;
+            args[ntokens] = token;
             ntokens++;
             token = strtok(NULL, " \n");
         }
 
-        // execute instruction
-        if (strcmp(split_input[0], "exit") == 0) {
-            printf("exiting... \n");
-            exit = 1;
-        }
+        execute_instruction(args, ntokens);
 
         // free allocated memory
-        free(split_input);
+        free(args);
         free(line);
     }
 
