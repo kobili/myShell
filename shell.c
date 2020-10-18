@@ -10,12 +10,32 @@
 // args[0] is the actual command itself - the rest of args is arguments to the instruction
 // returns 0 upon successful execution, 1 otherwise
 int execute_instruction(char** args, int nargs) {
+    // see if args[0] is a build in command; if so, execute it
     for (int i = 0; i < nbuilt_in_commands; i++) {
         if (strcmp(args[0], built_in_commands[i]) == 0) {
-            // execute the command
             return (*built_in_functions[i]) (args, nargs);
         }
     }
+
+    // attempt to execute an executable
+    pid_t pid = fork();
+    if (pid == -1) {
+        perror("fork");
+    }
+
+    if (pid == 0) {
+        // we are in child process
+        if (execvp(args[0], args) == -1) {
+            perror("execvp");
+            exit(1);    // kill child process
+        }
+    } else {
+        // we are in parent process
+        wait(&pid);
+        printf("\n");
+        return 0;
+    }
+
     printf("command not found '%s'\n", args[0]);
     return 1;
 }

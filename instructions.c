@@ -45,6 +45,8 @@ int exec_cd(char** args, int nargs) {
         return 1;
     }
 
+    // print the directory we just changed to
+    exec_pwd(args, nargs);
     return 0;
 }
 
