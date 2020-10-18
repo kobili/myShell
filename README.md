@@ -6,3 +6,4 @@ supports the following instructions:
  - pwd: Prints the path of the working directory to the console
  - echo: Prints whatever the user types to the console
  - exit: terminates the shell
+ - execution of executables
