@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdio.h>
+#include <dirent.h>
 
 // exit the shell
 int exec_exit(char** args, int nargs) {
@@ -55,18 +56,46 @@ int exec_cd(char** args, int nargs) {
     return 0;
 }
 
+// print a list of the current directory's contents
+int exec_ls(char** args, int nargs) {
+    // open the working directory
+    DIR * dirp = opendir(".");
+
+    // handle opendir errors
+    if (dirp == NULL) {
+        perror("dirp");
+        return 1;
+    }
+
+    struct dirent * current_entry = readdir(dirp);
+
+    while (current_entry != NULL) {
+        printf("%s\n", current_entry->d_name);
+        current_entry = readdir(dirp);
+    }
+
+    if (closedir(dirp) == -1) {
+        perror("closedir");
+        return 1;
+    }
+
+    return 0;
+}
+
 int (* built_in_functions[]) (char**, int) = {
     &exec_exit,
     &exec_echo,
     &exec_pwd,
-    &exec_cd
+    &exec_cd,
+    &exec_ls
 };
 
 char *built_in_commands[] = {
     "exit",
     "echo",
     "pwd",
-    "cd"
+    "cd",
+    "ls"
 };
 
-int nbuilt_in_commands = 4;
+int nbuilt_in_commands = 5;

@@ -7,3 +7,4 @@ supports the following instructions:
  - echo: Prints whatever the user types to the console
  - exit: terminates the shell
  - execution of executables
+ - ls: list all entries in the current directory

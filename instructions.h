@@ -16,6 +16,8 @@ int exec_pwd(char** args, int nargs);
 // change the current working directory
 int exec_cd(char** args, int nargs);
 
+// print a list of the current directory's contents
+int exec_ls(char** args, int nargs);
 
 extern int (* built_in_functions[]) (char**, int);
 extern char* built_in_commands[];
