@@ -4,11 +4,11 @@
 
 int main(int argc, char* argv[]) {
 
-    int n;
-    for (int i = 0; i < argc; i++) {
-        n = atoi(argv[i]);
-        printf("%d\n", n);
-    }
-
+    // int n;
+    // for (int i = 0; i < argc; i++) {
+    //     n = atoi(argv[i]);
+    //     printf("%d\n", n);
+    // }
+    printf("Hello, World!\n");
     return 0;
 }
