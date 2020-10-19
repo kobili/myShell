@@ -17,6 +17,7 @@ int exec_exit(char** args, int nargs) {
 int exec_echo(char** args, int nargs) {
     for (int i = 1; i < nargs; i++) {
         if (i == nargs - 1) {
+            // print a newline after the last argument
             printf("%s\n", args[i]);
         } else {
             printf("%s ", args[i]);
@@ -68,12 +69,13 @@ int exec_ls(char** args, int nargs) {
     }
 
     struct dirent * current_entry = readdir(dirp);
-
     while (current_entry != NULL) {
         printf("%s\n", current_entry->d_name);
+        // continue to next entry
         current_entry = readdir(dirp);
     }
-
+    
+    // close the directory
     if (closedir(dirp) == -1) {
         perror("closedir");
         return 1;
