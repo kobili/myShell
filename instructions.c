@@ -5,6 +5,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <dirent.h>
+#include <sys/stat.h>
 
 // exit the shell
 int exec_exit(char** args, int nargs) {
@@ -84,12 +85,35 @@ int exec_ls(char** args, int nargs) {
     return 0;
 }
 
+// create a new directory within the current working directory
+int exec_mkdir(char** args, int nargs) {
+
+    // append the name input by the user to the current directory's path
+    char* new_directory_name = args[1];
+    char* new_directory_path = getcwd(NULL, 0);
+    strcat(new_directory_path, "/");
+    strcat(new_directory_path, new_directory_name);
+
+    mode_t create_mode = S_IRWXU | S_IRGRP | S_IROTH;    // RWX for user, Read only for group and others
+
+    // create the directory
+    if (mkdir(new_directory_path, create_mode) == -1) {
+        perror("mkdir");
+        free(new_directory_path);
+        return 1;
+    }
+
+    free(new_directory_path);
+    return 0;
+}
+
 int (* built_in_functions[]) (char**, int) = {
     &exec_exit,
     &exec_echo,
     &exec_pwd,
     &exec_cd,
-    &exec_ls
+    &exec_ls,
+    &exec_mkdir
 };
 
 char *built_in_commands[] = {
@@ -97,7 +121,8 @@ char *built_in_commands[] = {
     "echo",
     "pwd",
     "cd",
-    "ls"
+    "ls",
+    "mkdir"
 };
 
-int nbuilt_in_commands = 5;
+int nbuilt_in_commands = 6;

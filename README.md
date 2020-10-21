@@ -8,3 +8,4 @@ supports the following instructions:
  - exit: terminates the shell
  - execution of executables
  - ls: list all entries in the current directory
+ - mkdir: creates a new sub directory in the current directory 

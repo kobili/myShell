@@ -9,6 +9,6 @@ int main(int argc, char* argv[]) {
     //     n = atoi(argv[i]);
     //     printf("%d\n", n);
     // }
-    printf("Hello, World!\n");
+    printf("LXI    B,#$%02x%02x", (unsigned char) 0x1, (unsigned char)0x2);
     return 0;
 }

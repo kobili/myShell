@@ -19,6 +19,9 @@ int exec_cd(char** args, int nargs);
 // print a list of the current directory's contents
 int exec_ls(char** args, int nargs);
 
+// create a new directory within the current working directory
+int exec_mkdir(char** args, int nargs);
+
 extern int (* built_in_functions[]) (char**, int);
 extern char* built_in_commands[];
 extern int nbuilt_in_commands;
