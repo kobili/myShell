@@ -69,6 +69,7 @@ int exec_ls(char** args, int nargs) {
         return 1;
     }
 
+    // loop through each entry in the directory
     struct dirent * current_entry = readdir(dirp);
     while (current_entry != NULL) {
         printf("%s\n", current_entry->d_name);
